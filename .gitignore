@@ -1,0 +1,12 @@
+node_modules/
+.pnpm-store/
+dist/
+.env
+.data/
+coverage/
+playwright-report/
+test-results/
+.superpowers/
+.worktrees/
+*.tsbuildinfo
+.DS_Store
