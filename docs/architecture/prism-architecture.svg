@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="940" viewBox="0 0 1400 940" role="img" aria-labelledby="title desc" font-family="'JetBrains Mono', ui-monospace, monospace">
+  <title id="title">PRISM — review orchestration architecture</title>
+  <desc id="desc">React calls a local Fastify API. Its transactional service calls an assessment adapter, which selects live OpenRouter Jev or demo fixtures. A deterministic TypeScript engine combines validated scores, evidence and policy to select a review route. Drizzle persists assessments, decisions and audit history to PGlite or PostgreSQL. GitHub ingestion and PR-Agent execution are not connected.</desc>
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#1e293b" stroke-width="0.5"/></pattern>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto-start-reverse"><path d="M0 0L8 4L0 8Z" fill="#94a3b8"/></marker>
+    <style>
+      .heading{font-size:19px;font-weight:600;fill:#f8fafc}.body{font-size:13px;fill:#cbd5e1}.small{font-size:12px;fill:#94a3b8}.label{font-size:12px;fill:#cbd5e1;paint-order:stroke;stroke:#020617;stroke-width:6;stroke-linejoin:round}.flow{fill:none;stroke:#94a3b8;stroke-width:1.6;marker-end:url(#arrow)}.base{fill:#0f172a}.node{stroke-width:1.5}.frontend{fill:#083344;fill-opacity:.4;stroke:#22d3ee}.backend{fill:#064e3b;fill-opacity:.4;stroke:#34d399}.database{fill:#4c1d95;fill-opacity:.4;stroke:#a78bfa}.cloud{fill:#78350f;fill-opacity:.3;stroke:#fbbf24}.generic{fill:#1e293b;fill-opacity:.5;stroke:#94a3b8}
+    </style>
+  </defs>
+  <rect width="1400" height="940" rx="16" fill="#020617"/>
+  <rect width="1400" height="940" rx="16" fill="url(#grid)"/>
+  <text x="40" y="46" fill="#f8fafc" font-size="26" font-weight="700">PRISM / System architecture</text>
+  <text x="40" y="73" class="body">Semantic risk assessment → deterministic routing → durable review history</text>
+
+  <!-- Process boundaries; the API is one process, not a collection of microservices. -->
+  <rect x="310" y="110" width="740" height="672" rx="12" fill="none" stroke="#34d399" stroke-dasharray="8 4"/>
+  <text x="334" y="140" fill="#34d399" font-size="13">LOCAL API PROCESS · Node.js / TypeScript · :3001</text>
+  <text x="40" y="140" fill="#22d3ee" font-size="13">BROWSER / VITE :5173</text>
+  <text x="1110" y="140" fill="#fbbf24" font-size="13">EXTERNAL MODEL API</text>
+
+  <!-- Connections are painted before the opaque component backgrounds. -->
+  <path class="flow" d="M270 230H345" marker-start="url(#arrow)"/>
+  <path class="flow" d="M480 295V395"/>
+  <path class="flow" d="M615 420H660V265H710"/>
+  <path class="flow" d="M1010 220H1110"/>
+  <path class="flow" d="M1110 300H1010"/>
+  <path class="flow" d="M860 345V445"/>
+  <path class="flow" d="M615 490H710" marker-start="url(#arrow)"/>
+  <path class="flow" d="M480 555V650" marker-start="url(#arrow)"/>
+  <path class="flow" d="M1010 515H1110"/>
+  <path d="M270 697H345" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 5"/>
+
+  <!-- Frontend -->
+  <rect class="base" x="40" y="175" width="230" height="170" rx="6"/>
+  <rect class="node frontend" x="40" y="175" width="230" height="170" rx="6"/>
+  <text x="60" y="207" class="heading">Command center</text>
+  <text x="60" y="234" class="body">React + TanStack Query</text>
+  <text x="60" y="263" class="small">Board / PR risk detail</text>
+  <text x="60" y="286" class="small">Policy simulator / audit</text>
+  <text x="60" y="320" fill="#22d3ee" font-size="12">apps/web</text>
+
+  <!-- Fastify HTTP boundary -->
+  <rect class="base" x="345" y="175" width="270" height="120" rx="6"/>
+  <rect class="node backend" x="345" y="175" width="270" height="120" rx="6"/>
+  <text x="365" y="207" class="heading">Fastify HTTP API</text>
+  <text x="365" y="233" class="body">Zod request validation</text>
+  <text x="365" y="259" class="small">Queries + mutation endpoints</text>
+  <text x="365" y="280" class="small">apps/api/src/app.ts</text>
+
+  <!-- Bounded model adapter -->
+  <rect class="base" x="710" y="175" width="300" height="170" rx="6"/>
+  <rect class="node backend" x="710" y="175" width="300" height="170" rx="6"/>
+  <text x="730" y="207" class="heading">Assessment adapter</text>
+  <text x="730" y="234" class="body">Live: OpenRouter Decisions</text>
+  <text x="730" y="260" class="body">Demo: five fixed PR fixtures</text>
+  <text x="730" y="288" class="small">Validate scores / probabilities</text>
+  <text x="730" y="312" class="small">0–4 → 0–10 · 15s timeout</text>
+  <text x="730" y="333" fill="#fb7185" font-size="12">API key stays on the server</text>
+
+  <!-- External inference service -->
+  <rect class="base" x="1110" y="175" width="250" height="170" rx="6"/>
+  <rect class="node cloud" x="1110" y="175" width="250" height="170" rx="6"/>
+  <text x="1130" y="207" class="heading">OpenRouter / Jev</text>
+  <text x="1130" y="235" class="body">typesafe/jev-1.13</text>
+  <text x="1130" y="262" class="small">POST /api/alpha/decisions</text>
+  <text x="1130" y="289" class="small">scope · criticality · testing</text>
+  <text x="1130" y="311" class="small">rollback · security</text>
+  <text x="1130" y="334" fill="#fbbf24" font-size="12">Only used in live mode</text>
+
+  <!-- Application service -->
+  <rect class="base" x="345" y="395" width="270" height="160" rx="6"/>
+  <rect class="node backend" x="345" y="395" width="270" height="160" rx="6"/>
+  <text x="365" y="427" class="heading">Review orchestration</text>
+  <text x="365" y="455" class="body">PR evidence + policy version</text>
+  <text x="365" y="483" class="small">Idempotency / state dedup</text>
+  <text x="365" y="506" class="small">Assessment / reasoned override</text>
+  <text x="365" y="536" fill="#34d399" font-size="12">service.ts + queries.ts</text>
+
+  <!-- Pure domain logic -->
+  <rect class="base" x="710" y="445" width="300" height="150" rx="6"/>
+  <rect class="node backend" x="710" y="445" width="300" height="150" rx="6"/>
+  <text x="730" y="477" class="heading" style="font-size:17px">Deterministic risk engine</text>
+  <text x="730" y="505" class="small">Weights → thresholds → guardrails</text>
+  <text x="730" y="533" class="small">Confidence / CI / paths / owners</text>
+  <text x="730" y="556" class="small">Reviewer suggestions + simulation</text>
+  <text x="730" y="581" fill="#34d399" font-size="12">packages/risk-engine</text>
+
+  <!-- Logical result, not another deployed service -->
+  <rect class="base" x="1110" y="445" width="250" height="150" rx="6"/>
+  <rect class="node generic" x="1110" y="445" width="250" height="150" rx="6"/>
+  <text x="1130" y="477" class="heading">Review decision</text>
+  <text x="1130" y="507" fill="#34d399" font-size="13">Fast / Standard / Critical</text>
+  <text x="1130" y="531" fill="#fbbf24" font-size="13">Needs triage</text>
+  <text x="1130" y="559" class="small">Reasons + reviewer requirements</text>
+  <text x="1130" y="581" class="small">Returned to UI; no merge action</text>
+
+  <!-- Shared package is a code dependency, not a service. -->
+  <rect class="base" x="40" y="445" width="230" height="150" rx="6"/>
+  <rect class="node generic" x="40" y="445" width="230" height="150" rx="6"/>
+  <text x="60" y="477" class="heading">Shared contracts</text>
+  <text x="60" y="505" class="body">packages/shared</text>
+  <text x="60" y="535" class="small">Types: web / API / engine</text>
+  <text x="60" y="559" class="small">Zod: API / engine validation</text>
+  <text x="60" y="581" class="small">Code dependency, no network</text>
+
+  <!-- Intake description is kept separate from runtime network arrows. -->
+  <rect class="base" x="40" y="650" width="230" height="95" rx="6"/>
+  <rect class="node generic" x="40" y="650" width="230" height="95" rx="6"/>
+  <text x="60" y="681" class="heading">Local demo data</text>
+  <text x="60" y="708" class="small">Startup SQL migration + seed</text>
+  <text x="60" y="730" class="small">Local normalized intake API</text>
+
+  <!-- Durable data -->
+  <rect class="base" x="345" y="650" width="665" height="95" rx="6"/>
+  <rect class="node database" x="345" y="650" width="665" height="95" rx="6"/>
+  <text x="365" y="681" class="heading">Drizzle ORM / durable SQL history</text>
+  <text x="365" y="708" class="body">PGlite: .data/prism (default) · PostgreSQL server (alternative)</text>
+  <text x="365" y="731" fill="#a78bfa" font-size="12">PRs · policies · scores · decisions · reviewers · audit · idempotency</text>
+
+  <text x="282" y="211" class="label">JSON</text>
+  <text x="367" y="360" class="label">POST: Idempotency-Key</text>
+  <text x="630" y="369" class="label" transform="rotate(-90 630 369)">assess(pr)</text>
+  <text x="1022" y="204" class="label">HTTPS</text>
+  <text x="1022" y="286" class="label">5 scores</text>
+  <text x="745" y="390" class="label">Validated scores / failure</text>
+  <text x="647" y="473" class="label">call</text>
+  <text x="526" y="610" class="label">Read / transaction</text>
+  <text x="1020" y="498" class="label">output</text>
+
+  <!-- Legend and caveats are outside all process boundaries. -->
+  <circle cx="48" cy="820" r="5" fill="#22d3ee"/><text x="63" y="825" class="small">Frontend</text>
+  <circle cx="190" cy="820" r="5" fill="#34d399"/><text x="205" y="825" class="small">Backend</text>
+  <circle cx="327" cy="820" r="5" fill="#a78bfa"/><text x="342" y="825" class="small">Persistence</text>
+  <circle cx="500" cy="820" r="5" fill="#fbbf24"/><text x="515" y="825" class="small">External model</text>
+  <path class="flow" d="M720 820H760"/><text x="777" y="825" class="small">Call / data flow (not deployment units)</text>
+  <path d="M40 850H1360" stroke="#1e293b"/>
+  <text x="40" y="877" class="body">Provider failure / low confidence → human triage. Policies and overrides retain their audit trail.</text>
+  <text x="40" y="907" class="small">Current demo boundary: no GitHub App or webhooks; PR-Agent is a suggested step only; no approvals or merges executed.</text>
+</svg>

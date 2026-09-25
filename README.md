@@ -106,17 +106,15 @@ PRISM does not generate fixes, scan for vulnerabilities, approve or merge a PR, 
 
 ## Architecture
 
-```mermaid
-flowchart LR
-  Web[React + Vite] -->|HTTP / JSON| API[Fastify]
-  API --> Engine[Pure TypeScript risk engine]
-  API --> DB[(PostgreSQL / PGlite)]
-  API --> Demo[Deterministic demo fixtures]
-  API -->|Live mode only| Jev[OpenRouter Decisions / Jev]
-  Shared[Shared Zod contracts] -.-> Web
-  Shared -.-> API
-  Shared -.-> Engine
-```
+![PRISM architecture: React command center, Fastify orchestration, Jev assessment adapter, deterministic risk engine, and durable SQL history](docs/architecture/prism-architecture.svg)
+
+[Full-size SVG](docs/architecture/prism-architecture.svg) · [Browser diagram with PNG/PDF export](docs/architecture/prism-architecture.html)
+
+The diagram follows the implemented local demo. The React frontend calls Fastify through Vite's `/api` proxy. Inside a single API process, the service loads PR evidence and the current policy, obtains validated scores from the selected provider, and calls the pure TypeScript risk engine. **Jev supplies semantic scores; application code decides the review route.** Demo mode uses fixed fixtures; live mode calls OpenRouter with a server-side key.
+
+Assessments, dimension scores, decisions, audit events and the idempotency response commit together through Drizzle. PGlite is the default local database; PostgreSQL is an alternative selected by `DATABASE_URL`. Policy simulation reuses stored scores, and reviewer suggestions do not create assignments. GitHub ingestion and PR-Agent execution are not connected.
+
+Diagram generated using [Cocoon AI's architecture-diagram skill](https://github.com/Cocoon-AI/architecture-diagram-generator). The SVG renders without external dependencies; the HTML export buttons load pinned html2canvas/jsPDF libraries from a CDN.
 
 ```text
 apps/web                command center, PR detail, policy simulator, audit
